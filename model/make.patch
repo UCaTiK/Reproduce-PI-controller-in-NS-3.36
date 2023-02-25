@@ -1,0 +1,18 @@
+--- CMakeLists.txt	2023-02-13 18:48:29.547493000 +0300
++++ CMakeLists2.txt	2023-02-13 18:57:59.440910526 +0300
+@@ -12,6 +12,7 @@
+     model/mq-queue-disc.cc
+     model/packet-filter.cc
+     model/pfifo-fast-queue-disc.cc
++    model/pi-queue-disc.cc
+     model/pie-queue-disc.cc
+     model/prio-queue-disc.cc
+     model/queue-disc.cc
+@@ -30,6 +31,7 @@
+     model/mq-queue-disc.h
+     model/packet-filter.h
+     model/pfifo-fast-queue-disc.h
++    model/pi-queue-disc.h
+     model/pie-queue-disc.h
+     model/prio-queue-disc.h
+     model/queue-disc.h

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cp model/pi-queue-disc.cc ../src/traffic-control/model/pi-queue-disc.cc
+cp model/pi-queue-disc.h ../src/traffic-control/model/pi-queue-disc.h
+(cp model/make.patch ../src/traffic-control/; cd ../src/traffic-control; patch CMakeLists.txt < make.patch)
+
+for file in traffic/*; do
+	cp $file ../scratch/
+done
+
+cp -r autoscripts/ ../
+
+echo Finish
+
