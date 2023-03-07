@@ -91,14 +91,17 @@ int main (int argc, char *argv[])
 	// Предел очереди
 	uint32_t piQueueLimit = 200;
 	// А параметр (unused)
-	// uint32_t A = 0.00001822*2;
+	//uint32_t A = 0.00007288;
 	// B параметр (unused)
-	// uint32_t B = 0.00001816*2;
+	//uint32_t B = 0.00007264;
+
+	string tcpType = "TcpNewReno";
 
 	// Возможность менять параметры из консоли
 	CommandLine cmd;
-	cmd.AddValue ("pathOut", "Path to save results from --writeForPlot/--writePcap/--writeFlowMonitor", pathOut);
+	cmd.AddValue ("pathOut", "Path to save results", pathOut);
 	cmd.AddValue ("writeForPlot", "<0/1> to write results for plot (gnuplot)", writeForPlot);
+	cmd.AddValue ("tcpType", "Types of TCP, default TcpNewReno", tcpType);
 	cmd.Parse (argc,argv);
 
 	LogComponentEnable ("PiQueueDisc", LOG_LEVEL_INFO);
@@ -136,6 +139,8 @@ int main (int argc, char *argv[])
 	Config::SetDefault ("ns3::PiQueueDisc::QueueRef", DoubleValue (piQueueRef));
 	// Предел очереди
 	Config::SetDefault ("ns3::PiQueueDisc::QueueLimit", DoubleValue (piQueueLimit));
+
+	Config::SetDefault("ns3::TcpL4Protocol::SocketType", StringValue("ns3::" + tcpType));
 	// Возможность изменить параметры в расчете p
 	// Config::SetDefault ("ns3::PiQueueDisc::A", DoubleValue (A));
 	// Config::SetDefault ("ns3::PiQueueDisc::B", DoubleValue (B));
@@ -241,7 +246,7 @@ int main (int argc, char *argv[])
 
 	// Запись в файл данных очереди
 	if (writeForPlot) {
-		filePlotQueue << pathOut << "/" << "pi-queue1.plotme";
+		filePlotQueue << pathOut << "/" << "pi-queue1-" << tcpType << ".plotme";
 		remove (filePlotQueue.str ().c_str ());
 		Ptr<QueueDisc> queue = queueDiscs.Get (0);
 		Simulator::ScheduleNow (&CheckQueueSize, queue);

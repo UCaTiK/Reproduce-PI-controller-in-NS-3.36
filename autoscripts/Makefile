@@ -1,14 +1,22 @@
+SHELL := bash
+
 all: build1 build2 build3
 
 run1:
-	./../ns3 run "first-bulksend --pathOut=./auto/pi/raw"
+	rm -f ./pi/raw/pi-queue1*
+	for tcp in TcpCubic TcpNewReno TcpBic TcpLinuxReno; do \
+		./../ns3 run "first-bulksend --pathOut=./autoscripts/pi/raw --tcpType=$${tcp}"; \
+	done
 run2:
-	./../ns3 run "second-bulksend --pathOut=./auto/pi/raw"
+	./../ns3 run "second-bulksend --pathOut=./autoscripts/pi/raw"
 run3:
-	./../ns3 run "third-mix --pathOut=./auto/pi/raw"
+	./../ns3 run "third-mix --pathOut=./autoscripts/pi/raw"
 
 plot1:
-	./pi/pi-queue1
+	rm -f ./pi/result/pi-queue1*
+	for tcp in TcpCubic TcpNewReno TcpBic TcpLinuxReno; do \
+		gnuplot -c ./pi/pi-queue1 $${tcp}; \
+	done
 plot2:
 	./pi/pi-queue2	
 plot3:

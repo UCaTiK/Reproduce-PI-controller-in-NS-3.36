@@ -3,13 +3,18 @@
 # задаём текстовую кодировку,
 # тип терминала, тип и размер шрифта
 set encoding utf8
-set term pdfcairo font "Arial,9"
+set term pngcairo font "Arial,14" size 800,600 dashed
+#set term png
+#set terminal png font arial 15 size 800,600
 
 # задаём выходной файл графика
-set out 'pi/result/pi-queue1.pdf'
+file_png = 'pi/result/pi-queue1-'.ARG1.'.png'
+file_avg_png = 'pi/result/pi-queue1-'.ARG1.'-avg.png'
+file_src = 'pi/raw/pi-queue1-'.ARG1.'.plotme'
+set out file_png
 
 # задаём название графика
-set title "Размер очереди для PI"
+set title "Размер очереди PI с TCP типа ".ARG1
 
 # задаём стиль линии
 set style line 2
@@ -17,17 +22,18 @@ set style line 2
 # подписи осей графика
 set xlabel "Время (в секундах)"
 set ylabel "Размер очереди (в пакетах)"
+set linestyle 1 lt 2 lw 3 linecolor rgb "black"
+set linestyle 2 lt 2 lw 1 linecolor rgb "black"
 
-plot [0:100][0:220]"pi/raw/pi-queue1.plotme" using ($1):($2) with lines title "PI"
-
+plot [0:100][0:220]file_src using ($1):($2) with lines title "Длина очереди" dashtype 1 lw 1 linecolor rgb "black", 50 title "Целевое значение длины очереди" dashtype 2 lw 1 linecolor rgb "black"
 
 # задаём выходной файл графика
-set out 'pi/result/pi-queue1-avg.pdf'
+set out file_avg_png
 
 # задаём название графика
-set title "Средний размер очереди для PI"
+set title "Средний размер очереди PI с TCP типа ".ARG1
 
 # задаём стиль линии
 set style line 2
 
-plot [0:100][0:220]"pi/raw/pi-queue1.plotme" using ($1):($3) with lines title "PI"
+plot [0:100][0:220]file_src using ($1):($3) with lines title "Средняя длина очереди" dashtype 1 lw 1 linecolor rgb "black", 50 title "Целевое значение длины очереди" dashtype 2 lw 1 linecolor rgb "black"
